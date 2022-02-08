@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'is not valid with a password less than the minimum length' do
-      subject.password = 'tay'
+      subject.password = 'jen'
       expect(subject).to_not be_valid
       print ".errors.full_messages === "
       print subject.errors.full_messages
@@ -42,6 +42,23 @@ RSpec.describe User, type: :model do
       print ".errors.full_messages === "
       print subject.errors.full_messages
     end
+  end
+
+  describe '.authenticate_with_credentials' do
+    let!(:user) { User.create!(name: 'Jen', email: 'test@test.com', password: 'password', password_confirmation: 'password') }
+
+    it 'should return nil if authentication fails' do
+      result = User.authenticate_with_credentials('jen@test.com', 'password')
+      expect(result).to be_nil
+    end
+
+    it 'should return the user if authentication passes' do
+      result = User.authenticate_with_credentials('test@test.com', 'password')
+      expect(result).to be_present
+    end
+
+    
+
   end
  
 
